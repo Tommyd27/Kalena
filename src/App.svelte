@@ -1,14 +1,22 @@
 <script>
 	export let name;
 	import KalenaIcon from "./components/KalenaIcon.svelte";
+    import GoodMorning from "./Good Morning.svelte";
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Vist the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-	<p> why the fuck doesnb't this bitch as sowrk asdfgsdepghsaioldehg\osp'eidghsdogij</p>
+
+
+<div class = "topBar">
 	<KalenaIcon/>
+</div>
+
+
+
+<main>
+	<GoodMorning></GoodMorning>
 </main>
+
+
 
 <style>
 	main {
@@ -30,4 +38,10 @@
 			max-width: none;
 		}
 	}
+
+	.topBar
+	{
+		position: absolute;
+	}
+
 </style>

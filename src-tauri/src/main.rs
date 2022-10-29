@@ -4,17 +4,26 @@
 )]
 
 
-use surrealdb::{Datastore, Session, Error};
+use surrealdb::{Datastore, Session};
+use crate::prelude::*;
+use store::Store;
+use std::sync::Arc;
+
+
+mod prelude;
+mod error;
+mod store;
 
 
 
 #[tokio::main]
-async fn main() -> Result<(), Error> {
-	let ds = Datastore::new("file://temp.db").await?;
-	let session = Session::for_db("appns", "appdb");
+async fn main() -> Result<()> {
+	let store = Arc::new(Store::new().await?);
 
   	tauri::Builder::default()
+	.manage(store)
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
+	
 	Ok(())
 }

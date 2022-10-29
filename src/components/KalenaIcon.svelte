@@ -1,1 +1,5 @@
-<img src = "./assets/icon.png" alt = "Kalena">
+<img src = "./assets/Kalena Text.png" alt = "Kalena" width = 30%>
+
+
+
+
