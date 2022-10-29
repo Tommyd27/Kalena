@@ -1,10 +1,13 @@
 <script>
 	export let name;
+	import KalenaIcon from "./components/KalenaIcon.svelte";
 </script>
 
 <main>
 	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<p>Vist the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<p> why the fuck doesnb't this bitch as sowrk asdfgsdepghsaioldehg\osp'eidghsdogij</p>
+	<KalenaIcon/>
 </main>
 
 <style>
