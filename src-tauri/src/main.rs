@@ -8,11 +8,12 @@ use surrealdb::{Datastore, Session};
 use crate::prelude::*;
 use store::Store;
 use std::sync::Arc;
-
+use ipc::hello;
 
 mod prelude;
 mod error;
 mod store;
+mod ipc;
 
 
 
@@ -22,6 +23,9 @@ async fn main() -> Result<()> {
 
   	tauri::Builder::default()
 	.manage(store)
+	.invoke_handler(tauri::generate_handler![
+		hello
+	])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 	
