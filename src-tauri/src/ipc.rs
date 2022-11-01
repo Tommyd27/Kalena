@@ -1,7 +1,8 @@
 use crate::prelude::*;
-use tauri::{command};
+use crate::Store;
+use tauri::{command, State};
 
 #[command]
-pub async fn hello(time: String) -> String {
+pub async fn hello(time: String, connection: State<Store>) -> String {
    format!("hello {}", time)
 }
