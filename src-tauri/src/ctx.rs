@@ -1,6 +1,7 @@
 use crate::prelude::*;
 use crate::Store;
 use std::sync::Arc;
+use tauri::{AppHandle, Manager, Wry};
 
 pub struct Ctx {
 	store: Arc<Store>,
