@@ -7,7 +7,7 @@
 
 	async function sendInput()
 	{
-		greetMsg = await invoke('hello', {time});
+		greetMsg = await invoke('send_time_wake', {time});
 	}
 </script>
 
