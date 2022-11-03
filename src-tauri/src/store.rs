@@ -39,4 +39,25 @@ impl Store
 
 		println!("{ress:?}");
 	}
+	pub async fn fetchLatestTime(store : Arc<Store>) -> String
+	{
+		let sql = "SELECT * FROM wakeup LIMIT 1";
+
+		let ress = store.ds.execute(sql, &store.ses, None, false).await;
+
+		let first_res = ress.into_iter().next().expect("No response");
+
+		let out = first_res.first();
+
+		match out
+		{
+			Some(result) => {
+										let out_ = &result.result;
+										println!("{out_:?}");
+		},
+			None => {println!("Go next");}
+		}
+		println!("{out:?}");
+		"Helllo".into()
+	}
 }

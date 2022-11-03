@@ -9,6 +9,11 @@
 	{
 		greetMsg = await invoke('send_time_wake', {time});
 	}
+
+	async function fetchLatestTime()
+	{
+		await invoke('fetch_latest_time');
+	}
 </script>
 
 
@@ -21,6 +26,8 @@
 <input type="time" id="appt" name="appt" required bind:value= {time}>
 
 <button type=submit on:click={sendInput}>Enter.</button> 
+
+<button type=submit on:click={fetchLatestTime}>Get.</button> 
 
 <p>{time}</p>
 <p>{greetMsg}</p>
