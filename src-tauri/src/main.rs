@@ -17,7 +17,7 @@ mod error;
 mod store;
 mod ipc;
 mod ctx;
-
+mod utils;
 
 
 #[tokio::main]

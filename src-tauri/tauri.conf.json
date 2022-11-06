@@ -59,7 +59,8 @@
         "height": 600,
         "resizable": true,
         "title": "Kalena",
-        "width": 800
+        "width": 800,
+		"alwaysOnTop": true
       }
     ]
   }

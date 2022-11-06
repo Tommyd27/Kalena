@@ -2,10 +2,17 @@ use std::collections::BTreeMap;
 
 use surrealdb::sql::{thing, Array, Datetime, Object, Value};
 use surrealdb::{Datastore, Session};
+use crate::ipc::fetch_latest_time;
 use crate::prelude::*;
 use crate::ctx::Ctx;
+use crate::utils::XTake;
+use x_takes::*;
 use std::sync::Arc;
 //mod error;
+
+mod try_from;
+mod x_takes;
+
 
 pub struct Store
 {
@@ -38,26 +45,24 @@ impl Store
 		let ress = store.ds.execute(sql, &store.ses, Some(vars), false).await;
 
 		println!("{ress:?}");
-	}
-	pub async fn fetchLatestTime(store : Arc<Store>) -> String
+	}//
+	pub async fn fetchLatestTime(store : Arc<Store>) -> Result<String>// -> Result<Object>
 	{
-		let sql = "SELECT * FROM wakeup LIMIT 1";
+		let sql = "SELECT time FROM wakeup LIMIT 1";
 
-		let ress = store.ds.execute(sql, &store.ses, None, false).await;
+		let ress = store.ds.execute(sql, &store.ses, None, true).await?.into_iter().next();//.result?.make_datetime();
+		let out : Result<Object>  = W(ress.unwrap().result?.first()).try_into();
+		let p : Option<Result<String>> = out?.remove("time").map(|v| W(v).try_into());
+		//println!("{ress:?}");
+		println!("{p:?}");
 
-		let first_res = ress.into_iter().next().expect("No response");
+		
+		//let first_res = ress.into_iter().next().expect("Did not get a response");
+		//let smthing: Result<Object> = W(first_res.result?.first()).try_into();
 
-		let out = first_res.first();
+		//smthing
 
-		match out
-		{
-			Some(result) => {
-										let out_ = &result.result;
-										println!("{out_:?}");
-		},
-			None => {println!("Go next");}
-		}
-		println!("{out:?}");
-		"Helllo".into()
+		Ok("hello".into())
 	}
+
 }
