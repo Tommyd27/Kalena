@@ -1,4 +1,5 @@
 use std::collections::BTreeMap;
+use std::str::FromStr;
 
 use surrealdb::sql::{thing, Array, Datetime, Object, Value};
 use surrealdb::{Datastore, Session};
@@ -8,6 +9,7 @@ use crate::ctx::Ctx;
 use crate::utils::XTake;
 use x_takes::*;
 use std::sync::Arc;
+use chrono::{Local, DateTime, Utc};
 //mod error;
 
 mod try_from;
@@ -28,14 +30,14 @@ impl Store
 		let ses = Session::for_db("appns", "appdb");
 		Ok(Store {ds, ses})
 	}
-	pub async fn insertTime(time : String, handle : Arc<Ctx>)
+	pub async fn insertTime(time : String, handle : Arc<Ctx>) -> Result<()>
 	{
 		let store = handle.get_store();
-
+		//let timeutc : DateTime<Utc> = DateTime::from_str(&time)?;
 		let sql = "CREATE wakeup CONTENT $data";
-
 		let data : BTreeMap<String, Value>= [
-			("time".into(), time.into()),
+			("timeWake".into(), DateTime::from_str(&time).unwrap().into()),
+			("timeComputer".into(), Utc::now().into())
 		 ].into();
 		let vars : BTreeMap<String, Value> = 
 		[
@@ -45,10 +47,12 @@ impl Store
 		let ress = store.ds.execute(sql, &store.ses, Some(vars), false).await;
 
 		println!("{ress:?}");
+
+		Ok(())
 	}//
 	pub async fn fetchLatestTime(store : Arc<Store>) -> Result<String>// -> Result<Object>
 	{
-		let sql = "SELECT time FROM wakeup LIMIT 1";
+		let sql = "SELECT date FROM wakeup LIMIT 1";
 
 		let ress = store.ds.execute(sql, &store.ses, None, true).await?.into_iter().next();//.result?.make_datetime();
 		let out : Result<Object>  = W(ress.unwrap().result?.first()).try_into();

@@ -3,6 +3,9 @@ pub enum Error {
 	#[error(transparent)]
 	Surreal(#[from] surrealdb::Error),
 
+	#[error("Parse Error")]
+	String(#[from] std::string::ParseError),
+
 	#[error("Fail to get Ctx")]
 	CtxFail,
 
