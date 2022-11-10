@@ -69,7 +69,7 @@ impl Store
 			("th".into(), table.into())
 		].into();*/
 
-		let ress = store.ds.execute(sql, &store.ses, Some(vars), true).await?.into_iter().next();//.result?.make_datetime();
+		let ress = store.ds.execute(sql, &store.ses, None, true).await?.into_iter().next();//.result?.make_datetime();
 		let out : Result<Object>  = W(ress.unwrap().result?.first()).try_into();
 		println!("{out:?}");
 
