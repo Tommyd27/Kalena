@@ -56,10 +56,8 @@ impl Store
 	}//
 	pub async fn fetch_string(store : Arc<Store>, field : &str, table : &str) -> Result<String>// -> Result<Object>
 	{
-		//let sql = &format!("SELECT {field} FROM {table}");
-		let sql = "SELECT * FROM $th";
+		let sql = &format!("SELECT {field} FROM {table}");
 
-		let vars : BTreeMap<String, Value> = map!["th".into() => thing(table)?.into()];
 		/*let vars : BTreeMap<String, Value> = 
 		[
 			("data".into(), thing(field)?.into()),
