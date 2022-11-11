@@ -12,12 +12,12 @@ pub async fn send_time_wake(time: String, connection: AppHandle<Wry>) {
    }
 }
 
-#[command]
+/*#[command]
 pub async fn fetch_latest_time(connection: AppHandle<Wry>)
 {
 	match Ctx::from_app(connection)
    {
-	Ok(ctx) => {Store::fetch_string(ctx.get_store(), "date", "wakeup").await;	},
+	Ok(ctx) => {	},
 	Err(_) => println!("go next"),
    }
-}
+}*/

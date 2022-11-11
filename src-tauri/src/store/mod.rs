@@ -3,7 +3,6 @@ use std::str::FromStr;
 
 use surrealdb::sql::{thing, Array, Datetime, Object, Value};
 use surrealdb::{Datastore, Session};
-use crate::ipc::fetch_latest_time;
 use crate::prelude::*;
 use crate::ctx::Ctx;
 use crate::utils::XTake;
@@ -37,7 +36,7 @@ impl Store
 		let store = handle.get_store();
 		//let timeutc : DateTime<Utc> = DateTime::from_str(&time)?;
 		let sql = "CREATE wakeup CONTENT $data";
-		let cTime = Utc::now();
+		let cTime = Local::now();
 		let data : BTreeMap<String, Value>= [
 			("timeWake".into(), time.into()),
 			("timeComputer".into(), cTime.time().to_string().into()),
@@ -73,7 +72,7 @@ impl Store
 		let out : Result<Object>  = W(ress.unwrap().result?.first()).try_into();
 		println!("{out:?}");
 
-		let p : Option<Result<String>> = out?.remove("date").map(|v| W(v).try_into());
+		let p : Option<Result<String>> = out?.remove(field).map(|v| W(v).try_into());
 		//println!("{ress:?}");
 		println!("{p:?}");
 

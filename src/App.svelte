@@ -2,6 +2,22 @@
 	export let name;
 	import KalenaIcon from "./components/KalenaIcon.svelte";
     import GoodMorning from "./Good Morning.svelte";
+	import { appWindow } from '@tauri-apps/api/window';
+
+
+
+	let screen = 0;
+	async function startup()
+	{
+		appWindow.emit("start-up", {message : "Successful startup."})
+		let x = await appWindow.listen("new-day");
+		console.log(x);
+	}
+	async function listenForScreenChange()
+	{
+		screen = await appWindow.listen()
+	}
+	
 </script>
 
 
