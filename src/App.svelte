@@ -3,20 +3,22 @@
 	import KalenaIcon from "./components/KalenaIcon.svelte";
     import GoodMorning from "./Good Morning.svelte";
 	import { appWindow } from '@tauri-apps/api/window';
+    import { invoke } from "@tauri-apps/api/tauri";
 
 
 
 	let screen = 0;
-	async function startup()
+
+	async function checkIfNeedDate()
 	{
-		appWindow.emit("start-up", {message : "Successful startup."})
-		let x = await appWindow.listen("new-day");
-		console.log(x);
+		if (!await invoke('need_date'))
+		{
+			screen = 1
+		}
+
 	}
-	async function listenForScreenChange()
-	{
-		screen = await appWindow.listen()
-	}
+	checkIfNeedDate()
+
 	
 </script>
 
@@ -29,7 +31,9 @@
 
 
 <main>
-	<GoodMorning></GoodMorning>
+	{#if screen == 0}
+		<GoodMorning></GoodMorning>
+	{/if}
 </main>
 
 
