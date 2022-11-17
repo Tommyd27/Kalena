@@ -5,11 +5,14 @@ use chrono::Local;
 use tauri::{command, Wry, AppHandle};
 
 #[command]
-pub async fn send_time_wake(time: String, connection: AppHandle<Wry>) {
+pub async fn send_time_wake(time: String, connection: AppHandle<Wry>) -> bool{
    match Ctx::from_app(connection)
    {
-	Ok(ctx) => {Store::insert_time(time, ctx).await;	},
-	Err(_) => println!("go next"),
+	Ok(ctx) => {
+		let result = Store::insert_time(time, ctx).await;
+		result.is_ok()
+	},
+	Err(_) => {println!("go next"); false},
    }
 }
   

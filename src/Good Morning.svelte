@@ -2,12 +2,34 @@
 
 <script>
 	import { invoke } from "@tauri-apps/api/tauri"
+	import { currentPage } from "./stores.js"
+	import Notification from "./components/Notification.svelte"
+    import { onMount } from "svelte";
 	let time = "";
-	let greetMsg = "";
+	let notifVisible = false;
+	let notifText = ""
 
 	async function sendInput()
 	{
-		greetMsg = await invoke('send_time_wake', {time});
+		console.log("hello")
+		let fetchTimeResponse = false
+		if(time != "")
+		{
+			fetchTimeResponse = await invoke('send_time_wake', {time});
+		}
+		console.log(fetchTimeResponse)
+		if(fetchTimeResponse)
+		{
+			currentPage.set(1)
+		}
+		else
+		{
+			notifVisible = true;
+			notifText = "There was an error sending time"
+			setTimeout(() => {
+				notifVisible = false
+			}, 3000);
+		}
 	}
 
 	async function fetchLatestTime()
@@ -29,8 +51,7 @@
 
 <button type=submit on:click={fetchLatestTime}>Get.</button> 
 
-<p>{time}</p>
-<p>{greetMsg}</p>
+<Notification visible = {notifVisible} notificationText = {notifText}/>
 
 
 
