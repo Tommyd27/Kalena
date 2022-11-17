@@ -21,6 +21,21 @@ pub struct Store
 	ds : Datastore,
 	ses: Session
 }
+/*
+Database Structure:
+
+Tables:
+	wakeup:
+		date : str
+		timeWake : str
+		timeComputer : str
+	
+		rocketLeaguePlayers:
+
+		rocketLeagueGames:
+
+*/
+
 
 impl Store
 {
