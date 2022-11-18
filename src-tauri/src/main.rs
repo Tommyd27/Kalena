@@ -27,15 +27,14 @@ async fn main() -> Result<()> {
 	let store = Arc::new(Store::new().await?);
 	
   	tauri::Builder::default()
-	/* .setup(move |app|
+	.setup(move |app|
 	{
 		let app_ = app.handle();
-		app.listen_global("start-up", move |e|{
-			println!("{e:?}");
-			app_.emit_all("new-day", PayloadB{p : requireDay});
+		app.listen_global("get_rocket_league_players", move |_e|{
+			
 		});
 		Ok(())
-	})*/
+	})
 	.manage(store)
 	.invoke_handler(tauri::generate_handler![
 		send_time_wake,

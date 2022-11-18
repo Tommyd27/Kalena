@@ -48,7 +48,6 @@
 
 <button type=submit on:click={sendInput}>Enter.</button> 
 
-<button type=submit on:click={fetchLatestTime}>Get.</button> 
 
 <Notification visible = {notifVisible} notificationText = {notifText}/>
 
