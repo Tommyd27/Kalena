@@ -2,9 +2,8 @@
 
 <script>
 	import { invoke } from "@tauri-apps/api/tauri"
-	import { currentPage } from "./stores.js"
-	import Notification from "./components/Notification.svelte"
-    import { onMount } from "svelte";
+	import { currentPage } from "../stores.js"
+	import Notification from "../components/Notification.svelte"
 	let time = "";
 	let notifVisible = false;
 	let notifText = ""
