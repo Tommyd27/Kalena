@@ -3,14 +3,13 @@
 <script>
 	import { invoke } from "@tauri-apps/api/tauri"
 	import { currentPage } from "../stores.js"
-	import Notification from "../components/Notification.svelte"
+	import Notification from "./components/Notification.svelte"
 	let time = "";
 	let notifVisible = false;
 	let notifText = ""
 
 	async function sendInput()
 	{
-		console.log("hello")
 		let fetchTimeResponse = false
 		if(time != "")
 		{

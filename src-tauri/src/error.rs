@@ -14,4 +14,7 @@ pub enum Error {
 
 	#[error("Property '{0}' not found")]
 	XPropertyNotFound(String),
+
+	#[error("Error Parsing Value to Player")]
+	PlayerParseError,
 }

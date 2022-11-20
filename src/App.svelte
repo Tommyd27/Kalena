@@ -1,9 +1,10 @@
 <script>
-	import KalenaIcon from "./components/KalenaIcon.svelte";
+	import KalenaIcon from "./pages/components/KalenaIcon.svelte";
     import GoodMorning from "./pages/Good Morning.svelte";
 	import { appWindow } from '@tauri-apps/api/window';
     import { invoke } from "@tauri-apps/api/tauri";
 	import { currentPage } from "./stores.js";
+    import RocketLeagueGamin from "./pages/Rocket League Gamin.svelte";
 
 
 	let debugUI = true;
@@ -36,11 +37,11 @@
 
 <main>
 	{#if $currentPage == 0}
-		<GoodMorning></GoodMorning>
+		<GoodMorning/>
 	{:else if $currentPage == 1}
 		<!--<GoodMorning></GoodMorning>-->
 	{:else if $currentPage == 2}
-		<GoodMorning></GoodMorning>
+		<RocketLeagueGamin/>
 	{/if}
 	
 </main>

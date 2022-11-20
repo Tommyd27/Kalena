@@ -19,7 +19,7 @@ mod x_takes;
 pub struct Store
 {
 	ds : Datastore,
-	ses: Session
+	ses: Session,
 }
 /*
 Database Structure:
