@@ -16,3 +16,11 @@
 {/each}
 
 <input bind:value = {notes}>
+
+<style>
+	h1{
+	font-size: 20px;  
+	padding: 0px; 
+	border: 0px;
+}
+</style>
