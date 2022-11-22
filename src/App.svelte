@@ -37,7 +37,8 @@
 
 <main>
 	{#if $currentPage == 0}
-		<GoodMorning/>
+		<RocketLeagueGamin/>
+		<!--<GoodMorning/>-->
 	{:else if $currentPage == 1}
 		<!--<GoodMorning></GoodMorning>-->
 	{:else if $currentPage == 2}
