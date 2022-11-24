@@ -3,18 +3,29 @@
 	import Player from "./components/Player.svelte"
 	let players = []
 	let playersOutput = []
-	let rows = ["Name", "MMR", "Respects", "Mechanical", "Speed"]
+	let rows = ["Name", "MMR"]
 	let statsToTrack = ["Respects", "Mechanical", "Speed"];
 	async function startListening()
 	{
 		players = await invoke('fetch_players');
-		playersOutput = new Array(players.length).fill(Object);
-		/*playersOutput.forEach(x =>{
-			statsToTrack.forEach(stat =>{
-				x[stat] = stat
-			})
-		})*/
+		playersOutput = new Array(players.length); 
+		
+		for (let i = 0; i < players.length; i++)
+		{
+			playersOutput[players[i].id] = new Object;
+			playersOutput[players[i].id].name = players[i].name
+			playersOutput[players[i].id].mmr = players[i].mmr
+		}
+	}
+	function output()
+	{
 		console.log(playersOutput)
+		console.log(Object.keys(playersOutput))
+		console.log(Object.keys(playersOutput["C"]))
+	}
+
+	function sendStats(){
+		
 	}
 	$: playerNumbers = players.length + 1
 </script>
@@ -24,19 +35,30 @@
 <div class = "tableGrid" style = "--playerNumbers: {playerNumbers}">
 	{#each rows as row, i}
 		<h1 style = "grid-row-start: {i+1}; grid-row-end: {i+1}">{row}</h1>
-		<!--<h1>{row}</h1>-->
 	{/each}
+
+	<h1 style = "grid-row-start:3; grid-row-end:3">Notes</h1>
+	{#each statsToTrack as row, i}
+		<h1 style = "grid-row-start: {2 * i + 4}; grid-row-end: {2 * i + 4}">{row}</h1>
+		<h1 style = "grid-row-start: {2 * i + 5}; grid-row-end: {2 * i + 5}; background-color: red">{row}</h1>
+	{/each}
+
 	{#each players as player, i}
 		<h1 style = "grid-row-start: 1; grid-row-end:1; grid-column-start:{i + 2}; grid-column-end:{i + 2}">{player.name}</h1>
 		<h1 style = "grid-row-start: 2; grid-row-end:2; grid-column-start:{i + 2}; grid-column-end:{i + 2}">{Math.round(player.mmr)}</h1>
+		<input bind:value={playersOutput[player.id]["notes"]}>
 		<!--<h1 style = "grid-row-start: 3; grid-row-end:3; grid-column-start:{i + 2}; grid-column-end:{i + 2}">{player.id}</h1>-->
 		{#each statsToTrack as row, j}
-			<input type=range min=0 max = 10 bind:value={playersOutput[j][row]} style = "grid-row-start:{j + 3}; grid-row-finish:{j + 3}; grid-column-start:{i + 2}; grid-column-end:{i + 2}">
+			<input type=range min=0 max = 10 bind:value={playersOutput[player.id][row]} style = "grid-row: 1; grid-row-start:{2 * j + 4}; grid-row-finish:{2 * j + 4}; grid-column-start:{i + 2}; grid-column-end:{i + 2}">
+			<input type=range min=0 max = 10 bind:value={playersOutput[player.id][row + "-"]} style = "grid-row: 2;grid-row-start:{2 * j + 5}; grid-row-finish:{2 * j + 5}; grid-column-start:{i + 2}; grid-column-end:{i + 2}">	
 		{/each}
 
 	{/each}
 		
 </div>
+
+<button on:click={output}>Cock</button>
+<button on:click={sendStats}>Send Stats</button>
 
 
 <style>
@@ -44,7 +66,7 @@
 		display: grid;
 		position: absolute;
 		gap: 1px 1px;
-		grid-template-rows: repeat(5, 1fr);
+		grid-template-rows: 1fr 1fr 2fr repeat(6, 1fr);
 		border: 1px solid #000;
 		grid-template-columns: repeat(var(--playerNumbers), 1fr);
 		background-color: black;
@@ -57,10 +79,6 @@
 		border: 0px;
 		background-color: white;
 		text-align: left;
-	}
-	.player{
-		grid-row-start: 1;
-		grid-row-end: 6;
 	}
 	input{
 		
