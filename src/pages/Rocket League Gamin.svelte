@@ -1,6 +1,12 @@
 <script>
 	import { invoke } from "@tauri-apps/api/tauri"
-	import Player from "./components/Player.svelte"
+	class Player {
+		constructor(id, name, generalStats) {
+			this.id = id
+			this.name = name
+			this.generalStats = generalStats
+		}
+	}
 	let players = []
 	let playersOutput = []
 	let rows = ["Name", "MMR"]
@@ -24,8 +30,29 @@
 		console.log(Object.keys(playersOutput["C"]))
 	}
 
-	function sendStats(){
-		
+	async function sendStats(){
+		let playersInfo = []
+		for (const [key, value] of Object.entries(playersOutput))
+		{
+			let id = key
+			let name = value["name"]
+			delete value.name
+
+			let generalStats = []
+
+			for (const [kKey, vValue] of Object.entries(value))
+			{
+				console.log(kKey, vValue)
+				generalStats.push([kKey, vValue])
+				
+			}
+
+			playersInfo.push(new Player (id, name, generalStats))
+		}
+		console.log(playersInfo);
+		console.log(await invoke('insert_players', {playersInfo}));
+		playersOutput = []
+		players = []
 	}
 	$: playerNumbers = players.length + 1
 </script>
@@ -50,7 +77,7 @@
 		<!--<h1 style = "grid-row-start: 3; grid-row-end:3; grid-column-start:{i + 2}; grid-column-end:{i + 2}">{player.id}</h1>-->
 		{#each statsToTrack as row, j}
 			<input type=range min=0 max = 10 bind:value={playersOutput[player.id][row]} style = "grid-row: 1; grid-row-start:{2 * j + 4}; grid-row-finish:{2 * j + 4}; grid-column-start:{i + 2}; grid-column-end:{i + 2}">
-			<input type=range min=0 max = 10 bind:value={playersOutput[player.id][row + "-"]} style = "grid-row: 2;grid-row-start:{2 * j + 5}; grid-row-finish:{2 * j + 5}; grid-column-start:{i + 2}; grid-column-end:{i + 2}">	
+			<input type=range min=0 max = 10 bind:value={playersOutput[player.id]["e" + row]} style = "grid-row: 2;grid-row-start:{2 * j + 5}; grid-row-finish:{2 * j + 5}; grid-column-start:{i + 2}; grid-column-end:{i + 2}">	
 		{/each}
 
 	{/each}

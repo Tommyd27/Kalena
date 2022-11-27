@@ -10,6 +10,7 @@ use x_takes::*;
 use std::sync::Arc;
 use chrono::{Local};
 use crate::utils::map;
+use crate::ipc::ReceivePlayer;
 //mod error;
 
 mod try_from;
@@ -99,5 +100,14 @@ impl Store
 
 		p.unwrap()
 	}
+	pub async fn insert_players(players : Vec<ReceivePlayer>, handle : Arc<Ctx>) -> Result<()>{
 
+		let store = handle.get_store();
+
+		for player in players{
+			
+		}
+
+		Ok(())
+	}
 }

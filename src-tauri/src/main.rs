@@ -10,7 +10,7 @@ use tauri::Manager;
 use crate::prelude::*;
 use store::Store;
 use std::sync::Arc;
-use crate::ipc::{send_time_wake, need_date, fetch_players};
+use crate::ipc::{send_time_wake, need_date, fetch_players, insert_players};
 use tauri::Window;
 use std::thread;
 use std::time;
@@ -42,6 +42,7 @@ async fn main() -> Result<()> {
 		send_time_wake,
 		need_date,
 		fetch_players,
+		insert_players,
 	])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");

@@ -3,7 +3,7 @@ use crate::ctx::Ctx;
 use crate::{error, Store};
 use chrono::Local;
 use tauri::{command, Wry, AppHandle};
-use serde::Serialize;
+use serde::{Serialize, Deserialize};
 use std::fs;
 use tokio::time::{sleep, Duration};
 
@@ -15,6 +15,8 @@ pub struct Player
 	mmr : f32,
 	id : String,
 }
+
+
 
 impl TryFrom<&str> for Player
 {
@@ -33,6 +35,12 @@ impl TryFrom<&str> for Player
 	}
 }
 
+#[derive(Deserialize, Debug)]
+pub struct ReceivePlayer {
+	id : String,
+	name : String,
+	generalStats : Vec<(String, i32)>
+}
 
 #[command]
 pub async fn send_time_wake(time: String, connection: AppHandle<Wry>) -> bool{
@@ -71,4 +79,10 @@ pub async fn fetch_players() -> Vec<Player>
 	};
 
 	players.split(";").filter(|x| !x.is_empty()).map(|p_string| Player::try_from(p_string).unwrap()).collect()
+}
+
+#[command]
+pub async fn insert_players(playersInfo : Vec<ReceivePlayer>) -> bool {
+	println!("{playersInfo:?}");
+	true
 }
