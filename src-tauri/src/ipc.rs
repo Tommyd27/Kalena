@@ -37,9 +37,9 @@ impl TryFrom<&str> for Player
 
 #[derive(Deserialize, Debug)]
 pub struct ReceivePlayer {
-	id : String,
-	name : String,
-	generalStats : Vec<(String, i32)>
+	pub id : String,
+	pub name : String,
+	pub generalStats : Vec<(String, i32)>
 }
 
 #[command]
