@@ -82,7 +82,13 @@ pub async fn fetch_players() -> Vec<Player>
 }
 
 #[command]
-pub async fn insert_players(playersInfo : Vec<ReceivePlayer>) -> bool {
+pub async fn insert_players(playersInfo : Vec<ReceivePlayer>, connection: AppHandle<Wry>) -> bool {
 	println!("{playersInfo:?}");
-	true
+	match Ctx::from_app(connection) {
+		Ok(ctx) => {
+			Store::insert_players(playersInfo, ctx).await;
+			true
+		},
+		Err(_) => false,
+   }
 }
