@@ -3,3 +3,4 @@
 
 .DS_Store
 /src-tauri/target
+/src-tauri/database_one

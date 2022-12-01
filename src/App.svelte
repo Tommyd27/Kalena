@@ -5,7 +5,9 @@
     import { invoke } from "@tauri-apps/api/tauri";
 	import { currentPage } from "./stores.js";
     import RocketLeagueGamin from "./pages/Rocket League Gamin.svelte";
-
+	
+	import { Router } from "@roxi/routify";
+  	import { routes } from "../.routify/routes";
 
 	let debugUI = true;
 	async function checkIfNeedDate()
@@ -22,7 +24,7 @@
 </script>
 
 
-
+<Router {routes} />
 <div class = "topBar">
 	<KalenaIcon/>
 </div>
@@ -37,8 +39,7 @@
 
 <main>
 	{#if $currentPage == 0}
-		<RocketLeagueGamin/>
-		<!--<GoodMorning/>-->
+		<GoodMorning/>
 	{:else if $currentPage == 1}
 		<!--<GoodMorning></GoodMorning>-->
 	{:else if $currentPage == 2}

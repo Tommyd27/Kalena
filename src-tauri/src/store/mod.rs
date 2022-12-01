@@ -43,7 +43,7 @@ impl Store
 	pub async fn new() -> Result<Self>
 	{
 		//let ds = Datastore::new("file://temp.db").await?;
-		let ds = Datastore::new("memory").await?;
+		let ds = Datastore::new("file://database_one").await?;
 		let ses = Session::for_db("appns", "appdb");
 		Ok(Store {ds, ses})
 	}
