@@ -6,8 +6,6 @@
 	import { currentPage } from "./stores.js";
     import RocketLeagueGamin from "./pages/Rocket League Gamin.svelte";
 	
-	import { Router } from "@roxi/routify";
-  	import { routes } from "../.routify/routes";
 
 	let debugUI = true;
 	async function checkIfNeedDate()
@@ -24,7 +22,6 @@
 </script>
 
 
-<Router {routes} />
 <div class = "topBar">
 	<KalenaIcon/>
 </div>

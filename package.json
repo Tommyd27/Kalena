@@ -6,7 +6,7 @@
     "build": "routify -b && rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
-	"dev:routify": "routify",
+    "dev:routify": "routify",
     "tauri": "tauri"
   },
   "devDependencies": {
