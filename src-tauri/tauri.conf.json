@@ -1,14 +1,14 @@
 {
-  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
-    "beforeBuildCommand": "npm run build",
-    "beforeDevCommand": "npm run dev",
-    "devPath": "http://localhost:8080",
-    "distDir": "../public"
+    "beforeDevCommand": "yarn dev",
+    "beforeBuildCommand": "yarn build",
+    "devPath": "http://localhost:1420",
+    "distDir": "../build",
+    "withGlobalTauri": false
   },
   "package": {
     "productName": "Kalena",
-    "version": "0.1.0"
+    "version": "0.0.0"
   },
   "tauri": {
     "allowlist": {
@@ -59,8 +59,7 @@
         "height": 600,
         "resizable": true,
         "title": "Kalena",
-        "width": 800,
-		"alwaysOnTop": true
+        "width": 800
       }
     ]
   }
