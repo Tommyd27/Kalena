@@ -24,6 +24,7 @@ dist-ssr
 *.sw?
 
 /build
+/src-tauri/database_one
 /.svelte-kit
 /package
 .env

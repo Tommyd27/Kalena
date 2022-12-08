@@ -11,13 +11,11 @@
 	let playersOutput = []
 	let rows = ["Name", "MMR"]
 	let statsToTrack = ["Respects", "Mechanical", "Speed"];
-	async function startListening()
-	{
+	async function startListening() {
 		players = await invoke('fetch_players');
 		playersOutput = new Array(players.length); 
 		
-		for (let i = 0; i < players.length; i++)
-		{
+		for (let i = 0; i < players.length; i++) {
 			playersOutput[players[i].id] = new Object;
 			playersOutput[players[i].id].name = players[i].name
 			playersOutput[players[i].id].mmr = players[i].mmr
