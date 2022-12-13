@@ -1,14 +1,12 @@
-<script>
-  import Greet from "$lib/Greet.svelte";
-</script>
 
-<h1>Welcome to Tauri!</h1>
+
+<h1>Kalena</h1>
 
 <div class="row">
   <a href="/rocket-league-players">
     <img src="/vite.svg" class="logo vite" alt="Vite Logo" />
   </a>
-  <a href="https://tauri.app" target="_blank">
+  <a href="/good-morning">
     <img src="/tauri.svg" class="logo tauri" alt="Tauri Logo" />
   </a>
   <a href="https://kit.svelte.dev" target="_blank">
@@ -18,9 +16,6 @@
 
 <p>Click on the Tauri, Vite, and Svelte logos to learn more.</p>
 
-<div class="row">
-  <Greet />
-</div>
 
 <style>
   .logo.vite:hover {
