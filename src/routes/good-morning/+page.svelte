@@ -25,10 +25,6 @@
 			}, 3000);
 		}
 	}
-	async function fetchLatestTime()
-	{
-		await invoke('fetch_latest_time');
-	}
 </script>
 
 
