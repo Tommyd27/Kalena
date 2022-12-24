@@ -62,6 +62,7 @@ pub async fn need_date(connection: AppHandle<Wry>) -> bool
 	Ok(ctx) => {
 		let date = Store::fetch_string(ctx.get_store(), "date", "wakeup").await.unwrap_or("-".into());
 		let today = Local::today().to_string();
+		println!("{date} {today}");
 		if date != Local::today().to_string() && Local::now().hour() > 4 {
 			return true
 		}

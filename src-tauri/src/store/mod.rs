@@ -70,11 +70,12 @@ impl Store
 	}
 	pub async fn fetch_string(store : Arc<Store>, field : &str, table : &str) -> Result<String>// -> Result<Object>
 	{
-		let sql = &format!("SELECT {field} FROM {table}");
+		let sql = &format!("SELECT {field} FROM {table} ORDER BY date DESC LIMIT 1");
 
 
 		let ress = store.ds.execute(sql, &store.ses, None, true).await?.into_iter().next();//.result?.make_datetime();
-		let out : Result<Object>  = W(ress.unwrap().result?.last()).try_into();
+		println!("{ress:?}");
+		let out : Result<Object>  = W(ress.unwrap().result?.first()).try_into();
 
 		let p : Option<Result<String>> = out?.remove(field).map(|v| W(v).try_into());
 
