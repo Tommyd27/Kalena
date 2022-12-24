@@ -48,10 +48,10 @@
 		playersOutput = []
 		players = []
 	}
-	$: playerNumbers = players.length + 1
+	$: playerNumbers = players.length
 </script>
 
-<button on:click={startListening}>PRESS ME PRESS ME PRESSES ME NOM NUM NUM</button>
+<button class = "btn" on:click={startListening}>Fetch Players</button>
 
 <div class = "tableGrid" style = "--playerNumbers: {playerNumbers}">
 	{#each rows as row, i}
@@ -67,7 +67,7 @@
 	{#each players as player, i}
 		<h1 style = "grid-row-start: 1; grid-row-end:1; grid-column-start:{i + 2}; grid-column-end:{i + 2}">{player.name}</h1>
 		<h1 style = "grid-row-start: 2; grid-row-end:2; grid-column-start:{i + 2}; grid-column-end:{i + 2}">{Math.round(player.mmr)}</h1>
-		<input bind:value={playersOutput[player.id]["notes"]}>
+		<textarea bind:value={playersOutput[player.id]["notes"]}></textarea>
 		<!--<h1 style = "grid-row-start: 3; grid-row-end:3; grid-column-start:{i + 2}; grid-column-end:{i + 2}">{player.id}</h1>-->
 		{#each statsToTrack as row, j}
 			<input type=range min=0 max = 10 bind:value={playersOutput[player.id][row]} style = "grid-row: 1; grid-row-start:{2 * j + 4}; grid-row-finish:{2 * j + 4}; grid-column-start:{i + 2}; grid-column-end:{i + 2}">
@@ -78,8 +78,7 @@
 		
 </div>
 
-<button on:click={output}>Cock</button>
-<button on:click={sendStats}>Send Stats</button>
+<button class = "btn" on:click={sendStats}>Send Stats</button>
 
 
 <style>
@@ -89,7 +88,7 @@
 		gap: 1px 1px;
 		grid-template-rows: 1fr 1fr 2fr repeat(6, 1fr);
 		border: 1px solid #000;
-		grid-template-columns: repeat(var(--playerNumbers), 1fr);
+		grid-template-columns: 0.5fr repeat(var(--playerNumbers), 1fr);
 		background-color: black;
 	}
 	h1{
@@ -100,8 +99,5 @@
 		border: 0px;
 		background-color: white;
 		text-align: left;
-	}
-	input{
-		
 	}
 </style>

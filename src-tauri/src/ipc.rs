@@ -1,7 +1,7 @@
 use crate::prelude::*;
 use crate::ctx::Ctx;
 use crate::{error, Store};
-use chrono::Local;
+use chrono::{Local, Timelike};
 use tauri::{command, Wry, AppHandle};
 use serde::{Serialize, Deserialize};
 use std::fs;
@@ -60,7 +60,12 @@ pub async fn need_date(connection: AppHandle<Wry>) -> bool
 	match Ctx::from_app(connection)
    {
 	Ok(ctx) => {
-		Store::fetch_string(ctx.get_store(), "date", "wakeup").await.unwrap_or("-".into()) != Local::today().to_string()
+		let date = Store::fetch_string(ctx.get_store(), "date", "wakeup").await.unwrap_or("-".into());
+		let today = Local::today().to_string();
+		if date != Local::today().to_string() && Local::now().hour() > 4 {
+			return true
+		}
+		false
 	},
 	Err(_) => true,
    }

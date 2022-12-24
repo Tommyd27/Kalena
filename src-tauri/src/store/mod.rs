@@ -64,7 +64,7 @@ impl Store
 
 		let ress = store.ds.execute(sql, &store.ses, Some(vars), false).await;
 
-		println!("{ress:?}");
+		println!("here {ress:?}");
 
 		Ok(())
 	}
@@ -74,12 +74,9 @@ impl Store
 
 
 		let ress = store.ds.execute(sql, &store.ses, None, true).await?.into_iter().next();//.result?.make_datetime();
-		let out : Result<Object>  = W(ress.unwrap().result?.first()).try_into();
-		println!("{out:?}");
+		let out : Result<Object>  = W(ress.unwrap().result?.last()).try_into();
 
 		let p : Option<Result<String>> = out?.remove(field).map(|v| W(v).try_into());
-		//println!("{ress:?}");
-		println!("{p:?}");
 
 
 		p.unwrap()
