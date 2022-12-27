@@ -7,6 +7,7 @@
 			this.generalStats = generalStats
 		}
 	}
+	let statToAdd = ""
 	let players = []
 	let playersOutput = []
 	let rows = ["Name", "MMR"]
@@ -20,12 +21,6 @@
 			playersOutput[players[i].id].name = players[i].name
 			playersOutput[players[i].id].mmr = players[i].mmr
 		}
-	}
-	function output()
-	{
-		console.log(playersOutput)
-		console.log(Object.keys(playersOutput))
-		console.log(Object.keys(playersOutput["C"]))
 	}
 	async function sendStats(){
 		let playersInfo = []
@@ -48,10 +43,24 @@
 		playersOutput = []
 		players = []
 	}
+	async function addNewStat(){
+		if (statToAdd == "") {
+			return
+		}
+		statsToTrack.push(statToAdd)
+		let result = await invoke('add_stat', {statToAdd});
+		console.log(result);
+	}
+
+	async function fetchStats(){
+		console.log("get bitches");
+		let result = await invoke("fetch_stats")
+		console.log(result)
+	}
 	$: playerNumbers = players.length
 </script>
 
-<button class = "btn" on:click={startListening}>Fetch Players</button>
+<button class = "outline-b" on:click={startListening}>Fetch Players</button>
 
 <div class = "tableGrid" style = "--playerNumbers: {playerNumbers}">
 	{#each rows as row, i}
@@ -78,7 +87,11 @@
 		
 </div>
 
-<button class = "btn" on:click={sendStats}>Send Stats</button>
+<button class = "outline-b" on:click={sendStats}>Send Stats</button>
+<input class = "outline-no-p" style = "margin-right: -6px;" bind:value={statToAdd}>
+<button class = "outline-no-p" on:click={addNewStat}>Add New Stat</button>
+<button class = "outline-no-p" on:click={fetchStats}>Fetch Stats</button>
+
 
 
 <style>

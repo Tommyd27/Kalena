@@ -82,6 +82,47 @@ impl Store
 
 		p.unwrap()
 	}
+	pub async fn fetch_stats(handle : Arc<Ctx>) -> Result<String>// -> Result<Object>
+	{
+		let store = handle.get_store();
+		let sql = &format!("SELECT name FROM statsToTrack");
+
+
+		let ress = store.ds.execute(sql, &store.ses, None, true).await?.into_iter().next();//.result?.make_datetime();
+		//println!("{ress:?}");
+
+		let out = ress.unwrap().result?;
+		
+		println!("{out:?}");
+		/*let out : Result<Object>  = W(ress.unwrap().result?.first()).try_into();
+
+		let p : Option<Result<String>> = out?.remove(field).map(|v| W(v).try_into());*/
+
+
+		Ok("hello".into())
+	}
+	pub async fn add_stat(stat : String, handle : Arc<Ctx>) -> Result<String>// -> Result<Object>
+	{
+		let store = handle.get_store();
+
+		let data : BTreeMap<String, Value>= [
+				("name".into(), stat.into()).into(),
+			].into();
+		let sql = &format!("CREATE statsToTrack CONTENT $data");
+		let vars : BTreeMap<String, Value> = [("data".into(), data.into())].into();
+
+
+		let ress = store.ds.execute(sql, &store.ses, Some(vars), false).await?;//.result?.make_datetime();
+		println!("{ress:?}");
+		/*let out : Result<Object>  = W(ress.unwrap().result?.first()).try_into();
+
+		let p : Option<Result<String>> = out?.remove(field).map(|v| W(v).try_into());*/
+
+
+		Ok("hello".into())
+	}
+	
+	
 	pub async fn insert_players(players : Vec<ReceivePlayer>, handle : Arc<Ctx>) -> Result<()>{
 
 		let store = handle.get_store();

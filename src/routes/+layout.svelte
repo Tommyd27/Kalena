@@ -21,8 +21,8 @@
       <Dropdown triggeredBy="#nav-menu1" class="w-44 z-20">
         <DropdownItem href="/rocket-league-players">Rocket League Players</DropdownItem>
       </Dropdown>
-      <NavLi id="nav-menu1" class="cursor-pointer"><Chevron aligned>Schedule</Chevron></NavLi>
-      <Dropdown triggeredBy="#nav-menu1" class="w-44 z-20">
+      <NavLi id="nav-menu2" class="cursor-pointer"><Chevron aligned>Schedule</Chevron></NavLi>
+      <Dropdown triggeredBy="#nav-menu2" class="w-44 z-20">
         <DropdownItem href="/scheduling">Time Table</DropdownItem>
         <DropdownItem href="/scheduling/tasks">Tasks</DropdownItem>
         <DropdownItem href="/scheduling/events">Events</DropdownItem>
