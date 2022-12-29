@@ -101,15 +101,13 @@ pub async fn insert_players(playersInfo : Vec<ReceivePlayer>, connection: AppHan
 
 #[command]
 pub async fn fetch_stats(connection : AppHandle<Wry>) -> Vec<String> {
-	Store::fetch_stats(Ctx::from_app(connection).unwrap()).await;
-	Vec::new()
+	Store::fetch_stats(Ctx::from_app(connection).unwrap()).await.unwrap()
 }
 #[command]
 pub async fn add_stat(statToAdd : String, connection : AppHandle<Wry>) -> bool {
 	match Ctx::from_app(connection) {
 		Ok(ctx) => {
-			Store::add_stat(statToAdd, ctx).await;
-			true
+			Store::add_stat(statToAdd, ctx).await.unwrap_or(false)
 		},
 		Err(_) => false,
    }

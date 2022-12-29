@@ -2,10 +2,10 @@ use std::collections::BTreeMap;
 use std::str::FromStr;
 
 use surrealdb::sql::{thing, Array, Datetime, Object, Value};
-use surrealdb::{Datastore, Session};
+use surrealdb::{Datastore, Session, Response};
 use crate::prelude::*;
 use crate::ctx::Ctx;
-use crate::utils::XTake;
+use crate::utils::{XTake, XTakeVal};
 use x_takes::*;
 use std::sync::Arc;
 use chrono::{Local};
@@ -82,26 +82,29 @@ impl Store
 
 		p.unwrap()
 	}
-	pub async fn fetch_stats(handle : Arc<Ctx>) -> Result<String>// -> Result<Object>
+	pub async fn fetch_stats(handle : Arc<Ctx>) -> Result<Vec<String>>// -> Result<Object>
 	{
 		let store = handle.get_store();
-		let sql = &format!("SELECT name FROM statsToTrack");
+		let sql = &format!("SELECT * FROM statsToTrack");
 
 
-		let ress = store.ds.execute(sql, &store.ses, None, true).await?.into_iter().next();//.result?.make_datetime();
-		//println!("{ress:?}");
-
-		let out = ress.unwrap().result?;
+		let ress = store.ds.execute(sql, &store.ses, None, true).await?;//.result?.make_datetime();
+		/*for obj in something {
+			let name = obj?.get("name");
+			let id = obj?.get("id");
+			//let name : String = obj?.x_take_val("name")?;
+		}
+		println!("out is {out:?}");
+		*/
 		
-		println!("{out:?}");
 		/*let out : Result<Object>  = W(ress.unwrap().result?.first()).try_into();
 
 		let p : Option<Result<String>> = out?.remove(field).map(|v| W(v).try_into());*/
 
 
-		Ok("hello".into())
+		Ok(Self::into_iter_objects(ress)?.map(|obj| obj.unwrap().x_take_val("name").unwrap()).collect())
 	}
-	pub async fn add_stat(stat : String, handle : Arc<Ctx>) -> Result<String>// -> Result<Object>
+	pub async fn add_stat(stat : String, handle : Arc<Ctx>) -> Result<bool>// -> Result<Object>
 	{
 		let store = handle.get_store();
 
@@ -119,7 +122,7 @@ impl Store
 		let p : Option<Result<String>> = out?.remove(field).map(|v| W(v).try_into());*/
 
 
-		Ok("hello".into())
+		Ok(true)
 	}
 	
 	
@@ -144,5 +147,19 @@ impl Store
 		}
 
 		Ok(())
+	}
+
+	fn into_iter_objects(ress : Vec<Response>) -> Result<impl Iterator<Item = Result<Object>>> {
+		let res = ress.into_iter().next().map(|rp : Response| rp.result).transpose()?;
+		match res {
+			Some(Value::Array(arr)) => {
+				let it = arr.into_iter().map(|v| match v {
+					Value::Object(object) => Ok(object),
+					_ => Err(Error::SurrealC("A record was not an object"))
+				});
+				Ok(it)
+			},
+			_ => Err(Error::SurrealC("No records found"))
+		}
 	}
 }

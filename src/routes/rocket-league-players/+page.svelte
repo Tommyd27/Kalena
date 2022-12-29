@@ -11,7 +11,8 @@
 	let players = []
 	let playersOutput = []
 	let rows = ["Name", "MMR"]
-	let statsToTrack = ["Respects", "Mechanical", "Speed"];
+	//let statsToTrack = ["Respects", "Mechanical", "Speed"];
+	let statsToTrack = []
 	async function startListening() {
 		players = await invoke('fetch_players');
 		playersOutput = new Array(players.length); 
@@ -53,16 +54,15 @@
 	}
 
 	async function fetchStats(){
-		console.log("get bitches");
-		let result = await invoke("fetch_stats")
-		console.log(result)
+		statsToTrack = await invoke("fetch_stats")
 	}
 	$: playerNumbers = players.length
+	$: statNumbers = statsToTrack.length * 2
 </script>
 
 <button class = "outline-b" on:click={startListening}>Fetch Players</button>
 
-<div class = "tableGrid" style = "--playerNumbers: {playerNumbers}">
+<div class = "tableGrid" style = "--playerNumbers: {playerNumbers} --statNumbers: {statNumbers}">
 	{#each rows as row, i}
 		<h1 style = "grid-row-start: {i+1}; grid-row-end: {i+1}">{row}</h1>
 	{/each}
@@ -99,7 +99,7 @@
 		display: grid;
 		position: absolute;
 		gap: 1px 1px;
-		grid-template-rows: 1fr 1fr 2fr repeat(6, 1fr);
+		grid-template-rows: 1fr 1fr 2fr repeat(var(--statNumbers), 1fr);
 		border: 1px solid #000;
 		grid-template-columns: 0.5fr repeat(var(--playerNumbers), 1fr);
 		background-color: black;

@@ -17,4 +17,8 @@ pub enum Error {
 
 	#[error("Error Parsing Value to Player")]
 	PlayerParseError,
+
+	#[error("Surreal Error '{0}'")]
+	SurrealC(&'static str),
+	
 }
