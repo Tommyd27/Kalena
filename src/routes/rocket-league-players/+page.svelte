@@ -51,10 +51,18 @@
 		statsToTrack.push(statToAdd)
 		let result = await invoke('add_stat', {statToAdd});
 		console.log(result);
+		fetchStats()
 	}
 
 	async function fetchStats(){
 		statsToTrack = await invoke("fetch_stats")
+		console.log(statsToTrack)
+	}
+
+	async function delStatTrack(statId) {
+		console.log(statId)
+		await invoke("delete_stat", {statId});
+		fetchStats()
 	}
 	$: playerNumbers = players.length
 	$: statNumbers = statsToTrack.length * 2
@@ -69,8 +77,10 @@
 
 	<h1 style = "grid-row-start:3; grid-row-end:3">Notes</h1>
 	{#each statsToTrack as row, i}
-		<h1 style = "grid-row-start: {2 * i + 4}; grid-row-end: {2 * i + 4}">{row}</h1>
-		<h1 style = "grid-row-start: {2 * i + 5}; grid-row-end: {2 * i + 5}; background-color: red">{row}</h1>
+		<h1 style = "grid-row-start: {2 * i + 4}; grid-row-end: {2 * i + 4}">{row[1]}</h1>
+		<button on:click = {() => delStatTrack(row[0])}
+			style = "grid-row-start: {2 * i + 4}; grid-row-end: {2 * i + 4}; background-color: green">Del</button>
+		<h1 style = "grid-row-start: {2 * i + 5}; grid-row-end: {2 * i + 5}; background-color: red">{row[1]}</h1>
 	{/each}
 
 	{#each players as player, i}
@@ -79,8 +89,12 @@
 		<textarea bind:value={playersOutput[player.id]["notes"]}></textarea>
 		<!--<h1 style = "grid-row-start: 3; grid-row-end:3; grid-column-start:{i + 2}; grid-column-end:{i + 2}">{player.id}</h1>-->
 		{#each statsToTrack as row, j}
-			<input type=range min=0 max = 10 bind:value={playersOutput[player.id][row]} style = "grid-row: 1; grid-row-start:{2 * j + 4}; grid-row-finish:{2 * j + 4}; grid-column-start:{i + 2}; grid-column-end:{i + 2}">
-			<input type=range min=0 max = 10 bind:value={playersOutput[player.id]["e" + row]} style = "grid-row: 2;grid-row-start:{2 * j + 5}; grid-row-finish:{2 * j + 5}; grid-column-start:{i + 2}; grid-column-end:{i + 2}">	
+			<input 	type=range min=0 max = 10 
+					bind:value={playersOutput[player.id][row]} 
+					style = "grid-row: 1; grid-row-start:{2 * j + 4}; grid-row-finish:{2 * j + 4}; grid-column-start:{i + 2}; grid-column-end:{i + 2}">
+			<input 	type=range min=0 max = 10 
+					bind:value={playersOutput[player.id]["e" + row]} 
+					style = "grid-row: 2;grid-row-start:{2 * j + 5}; grid-row-finish:{2 * j + 5}; grid-column-start:{i + 2}; grid-column-end:{i + 2}">	
 		{/each}
 
 	{/each}

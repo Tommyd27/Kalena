@@ -100,7 +100,7 @@ pub async fn insert_players(playersInfo : Vec<ReceivePlayer>, connection: AppHan
 }
 
 #[command]
-pub async fn fetch_stats(connection : AppHandle<Wry>) -> Vec<String> {
+pub async fn fetch_stats(connection : AppHandle<Wry>) -> Vec<(String, String)> {
 	Store::fetch_stats(Ctx::from_app(connection).unwrap()).await.unwrap()
 }
 #[command]
@@ -110,5 +110,16 @@ pub async fn add_stat(statToAdd : String, connection : AppHandle<Wry>) -> bool {
 			Store::add_stat(statToAdd, ctx).await.unwrap_or(false)
 		},
 		Err(_) => false,
+   }
+}
+
+#[command]
+pub async fn delete_stat(stat_id : String, connection : AppHandle<Wry>) {
+	println!("arrived {stat_id}");
+	match Ctx::from_app(connection) {
+		Ok(ctx) => {
+			Store::del_stat(stat_id, ctx).await;
+		},
+		Err(_) => (),
    }
 }

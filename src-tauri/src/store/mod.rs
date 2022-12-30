@@ -82,27 +82,24 @@ impl Store
 
 		p.unwrap()
 	}
-	pub async fn fetch_stats(handle : Arc<Ctx>) -> Result<Vec<String>>// -> Result<Object>
+	pub async fn fetch_stats(handle : Arc<Ctx>) -> Result<Vec<(String, String)>>// -> Result<Object>
 	{
 		let store = handle.get_store();
+
+
 		let sql = &format!("SELECT * FROM statsToTrack");
 
 
-		let ress = store.ds.execute(sql, &store.ses, None, true).await?;//.result?.make_datetime();
-		/*for obj in something {
-			let name = obj?.get("name");
-			let id = obj?.get("id");
-			//let name : String = obj?.x_take_val("name")?;
-		}
-		println!("out is {out:?}");
-		*/
-		
-		/*let out : Result<Object>  = W(ress.unwrap().result?.first()).try_into();
-
-		let p : Option<Result<String>> = out?.remove(field).map(|v| W(v).try_into());*/
+		let ress = store.ds.execute(sql, &store.ses, None, true).await?;
+		let out : Vec<(String, String)> = Self::into_iter_objects(ress)?.map(|obj| {
+			let obj = obj.unwrap();
+			let name = obj.get("name").unwrap().to_string().replace('"', "");
+			let id = obj.get("id").unwrap().to_string();
+			(id, name)
+		}).collect();
 
 
-		Ok(Self::into_iter_objects(ress)?.map(|obj| obj.unwrap().x_take_val("name").unwrap()).collect())
+		Ok(out)
 	}
 	pub async fn add_stat(stat : String, handle : Arc<Ctx>) -> Result<bool>// -> Result<Object>
 	{
@@ -124,7 +121,22 @@ impl Store
 
 		Ok(true)
 	}
-	
+	pub async fn del_stat(stat : String, handle : Arc<Ctx>) -> Result<bool>// -> Result<Object>
+	{
+		let store = handle.get_store();
+
+		let sql = &format!("DELETE {}", stat);
+
+
+		let ress = store.ds.execute(sql, &store.ses, None, false).await?;//.result?.make_datetime();
+		println!("{ress:?}");
+		/*let out : Result<Object>  = W(ress.unwrap().result?.first()).try_into();
+
+		let p : Option<Result<String>> = out?.remove(field).map(|v| W(v).try_into());*/
+
+
+		Ok(true)
+	}
 	
 	pub async fn insert_players(players : Vec<ReceivePlayer>, handle : Arc<Ctx>) -> Result<()>{
 
