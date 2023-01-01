@@ -123,3 +123,7 @@ pub async fn delete_stat(stat_id : String, connection : AppHandle<Wry>) {
 		Err(_) => (),
    }
 }
+
+
+#[command]
+pub async fn create_task()
