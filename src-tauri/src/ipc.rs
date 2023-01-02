@@ -140,7 +140,7 @@ pub struct ReceiveTask {
 }
 
 #[command]
-pub async fn create_task(task : ReceiveTask, connection : AppHandle<Wry>) {
+pub async fn create_task(task : ReceiveTask, connection : AppHandle<Wry>) -> bool {
 	let varNames : Vec<String> = vec!["name", "to_do_by", "to_do_after",
 									  "task_type", "description", "repeats",
 									  "until", "per", "frequency"
@@ -153,12 +153,12 @@ pub async fn create_task(task : ReceiveTask, connection : AppHandle<Wry>) {
 									  task.repeats.into(),
 									  task.until.into(),
 	];
-	println!("hello i'm here");
 	let data : BTreeMap<String, Value> = BTreeMap::from_iter(varNames.into_iter().zip(varValues));
 	match Ctx::from_app(connection) {
 		Ok(ctx) => {
-			Store::insert_values(ctx, "tasks", data).await;
+			Store::insert_values("tasks", data, ctx).await;
+			true
 		},
-		Err(_) => (),
+		Err(_) => false,
    }
 }

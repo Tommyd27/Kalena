@@ -160,7 +160,7 @@ impl Store
 		let store = handle.get_store();
 
 		let data : BTreeMap<String, Value>= [
-				("name".into(), stat.into()).into(),
+				("name".into(), stat.into()),
 			].into();
 		let sql = &format!("CREATE statsToTrack CONTENT $data");
 		let vars : BTreeMap<String, Value> = [("data".into(), data.into())].into();
@@ -176,19 +176,13 @@ impl Store
 		Ok(true)
 	}
 
-	pub async fn insert_values(handle : Arc<Ctx>, table : &str, values : BTreeMap<String, Value>) -> Result<()> {
+	pub async fn insert_values(table : &str, values : BTreeMap<String, Value>, handle : Arc<Ctx>) -> Result<()> {
 		let store = handle.get_store();
-		println!("{values:?}");
 		let vars : BTreeMap<String, Value> = [
-			("th".into(), thing(table)?.into()),
 			("data".into(), values.into())
-			].into();
-		println!("in insert values");
-		
-		println!("{vars:?}");
-		let sql = "CREATE $th CONTENT $data";
-		let ress = store.ds.execute(sql, &store.ses, Some(vars), false).await?;//.result?.make_datetime();
-		println!("in insert vasdfdsgdsfghlues");
+		].into();
+		let sql = format!("CREATE {} CONTENT $data", table);
+		let ress = store.ds.execute(&sql, &store.ses, Some(vars), false).await?;//.result?.make_datetime();
 		println!("{ress:?}");
 		Ok(())
 	}

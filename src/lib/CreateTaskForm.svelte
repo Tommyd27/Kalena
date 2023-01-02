@@ -46,7 +46,14 @@
         console.log(e)
         let task = new Task(name, to_do_by, to_do_after, type, description, repeats, until, per, frequency)
         console.log("hello", task)
-        invoke("create_task", {task});
+        let result = await invoke("create_task", {task})
+        console.log(result)
+        if (result) {
+            e.target.reset();
+        }
+        else {
+            //error
+        }
     }
 </script>
 
