@@ -1,4 +1,6 @@
 <script>
+    import { invoke } from '@tauri-apps/api/tauri';
+
 // @ts-nocheck
     import { Input, Label, Helper, Textarea, Button, Select} from 'flowbite-svelte';
     let name = ""
@@ -15,7 +17,7 @@
 			this.name = name
             this.to_do_by = to_do_by
             this.to_do_after = to_do_after
-            this.type = type
+            this.task_type = type
             this.description = description
             this.repeats = repeats
             this.until = until
@@ -42,7 +44,9 @@
 
     async function onSubmit(e) {
         console.log(e)
-        let task = Task(name, to_do_by, to_do_after, type, description, repeats, until, per, frequency)
+        let task = new Task(name, to_do_by, to_do_after, type, description, repeats, until, per, frequency)
+        console.log("hello", task)
+        invoke("create_task", {task});
     }
 </script>
 

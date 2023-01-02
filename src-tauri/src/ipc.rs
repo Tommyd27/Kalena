@@ -2,8 +2,10 @@ use crate::prelude::*;
 use crate::ctx::Ctx;
 use crate::{error, Store};
 use chrono::{Local, Timelike};
+use surrealdb::sql::Value;
 use tauri::{command, Wry, AppHandle};
 use serde::{Serialize, Deserialize};
+use std::collections::BTreeMap;
 use std::fs;
 use tokio::time::{sleep, Duration};
 
@@ -124,6 +126,39 @@ pub async fn delete_stat(stat_id : String, connection : AppHandle<Wry>) {
    }
 }
 
+#[derive(Deserialize, Debug)]
+pub struct ReceiveTask {
+	pub name : String,
+	pub to_do_by : String,
+	pub to_do_after : String,
+	pub task_type : String,
+	pub description : String,
+	pub repeats : i32,
+	pub until : String,
+	pub per : String,
+	pub frequency : i32,
+}
 
 #[command]
-pub async fn create_task()
+pub async fn create_task(task : ReceiveTask, connection : AppHandle<Wry>) {
+	let varNames : Vec<String> = vec!["name", "to_do_by", "to_do_after",
+									  "task_type", "description", "repeats",
+									  "until", "per", "frequency"
+									].into_iter().map(|f| f.into()).collect();
+	let varValues : Vec<Value> = vec![task.name.into(),
+									  task.to_do_by.into(),
+									  task.to_do_after.into(),
+									  task.task_type.into(),
+									  task.description.into(),
+									  task.repeats.into(),
+									  task.until.into(),
+	];
+	println!("hello i'm here");
+	let data : BTreeMap<String, Value> = BTreeMap::from_iter(varNames.into_iter().zip(varValues));
+	match Ctx::from_app(connection) {
+		Ok(ctx) => {
+			Store::insert_values(ctx, "tasks", data).await;
+		},
+		Err(_) => (),
+   }
+}

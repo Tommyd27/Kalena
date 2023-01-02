@@ -101,26 +101,6 @@ impl Store
 
 		Ok(out)
 	}
-	pub async fn add_stat(stat : String, handle : Arc<Ctx>) -> Result<bool>// -> Result<Object>
-	{
-		let store = handle.get_store();
-
-		let data : BTreeMap<String, Value>= [
-				("name".into(), stat.into()).into(),
-			].into();
-		let sql = &format!("CREATE statsToTrack CONTENT $data");
-		let vars : BTreeMap<String, Value> = [("data".into(), data.into())].into();
-
-
-		let ress = store.ds.execute(sql, &store.ses, Some(vars), false).await?;//.result?.make_datetime();
-		println!("{ress:?}");
-		/*let out : Result<Object>  = W(ress.unwrap().result?.first()).try_into();
-
-		let p : Option<Result<String>> = out?.remove(field).map(|v| W(v).try_into());*/
-
-
-		Ok(true)
-	}
 	pub async fn del_stat(stat : String, handle : Arc<Ctx>) -> Result<bool>// -> Result<Object>
 	{
 		let store = handle.get_store();
@@ -173,5 +153,43 @@ impl Store
 			},
 			_ => Err(Error::SurrealC("No records found"))
 		}
+	}
+
+	pub async fn add_stat(stat : String, handle : Arc<Ctx>) -> Result<bool>// -> Result<Object>
+	{
+		let store = handle.get_store();
+
+		let data : BTreeMap<String, Value>= [
+				("name".into(), stat.into()).into(),
+			].into();
+		let sql = &format!("CREATE statsToTrack CONTENT $data");
+		let vars : BTreeMap<String, Value> = [("data".into(), data.into())].into();
+
+
+		let ress = store.ds.execute(sql, &store.ses, Some(vars), false).await?;//.result?.make_datetime();
+		println!("{ress:?}");
+		/*let out : Result<Object>  = W(ress.unwrap().result?.first()).try_into();
+
+		let p : Option<Result<String>> = out?.remove(field).map(|v| W(v).try_into());*/
+
+
+		Ok(true)
+	}
+
+	pub async fn insert_values(handle : Arc<Ctx>, table : &str, values : BTreeMap<String, Value>) -> Result<()> {
+		let store = handle.get_store();
+		println!("{values:?}");
+		let vars : BTreeMap<String, Value> = [
+			("th".into(), thing(table)?.into()),
+			("data".into(), values.into())
+			].into();
+		println!("in insert values");
+		
+		println!("{vars:?}");
+		let sql = "CREATE $th CONTENT $data";
+		let ress = store.ds.execute(sql, &store.ses, Some(vars), false).await?;//.result?.make_datetime();
+		println!("in insert vasdfdsgdsfghlues");
+		println!("{ress:?}");
+		Ok(())
 	}
 }
