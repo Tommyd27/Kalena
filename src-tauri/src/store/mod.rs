@@ -186,4 +186,21 @@ impl Store
 		println!("{ress:?}");
 		Ok(())
 	}
+
+	pub async fn fetch_tasks(handle : Arc<Ctx>) -> Result<()> {
+		let store = handle.get_store();
+
+		let sql = "SELECT * from tasks";
+		let ress = store.ds.execute(sql, &store.ses, None, true).await?;
+		
+		for obj in Store::into_iter_objects(ress)? {
+			let obj = obj?;
+			println!("{obj:?}");
+			let values = obj.values();
+			println!("{values:?}");
+			break;
+		}
+
+		Ok(())
+	}
 }

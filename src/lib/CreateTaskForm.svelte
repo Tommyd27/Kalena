@@ -55,9 +55,12 @@
             //error
         }
     }
+    function cancel(e) {
+        window.location.href = "../";
+    }
 </script>
 
-<form style = "margin-left: 5px" on:submit|preventDefault={onSubmit}>
+<form style = "margin-left: 5px" on:submit|preventDefault={onSubmit} on:reset={cancel}>
     <div class="grid gap-6 mb-6 md:grid-cols-2">
       <div>
         <Label for="task_name" class="mb-2">Task name</Label>
@@ -99,4 +102,5 @@
         <Textarea {...textareaprops} required bind:value = {description}/>
     </div>
     <Button type="submit">Submit</Button>
+    <Button type="reset">Cancel</Button>
   </form>

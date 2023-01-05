@@ -126,17 +126,17 @@ pub async fn delete_stat(stat_id : String, connection : AppHandle<Wry>) {
    }
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct ReceiveTask {
 	pub name : String,
-	pub to_do_by : String,
-	pub to_do_after : String,
+	pub to_do_by : Option<String>,
+	pub to_do_after : Option<String>,
 	pub task_type : String,
 	pub description : String,
-	pub repeats : i32,
-	pub until : String,
-	pub per : String,
-	pub frequency : i32,
+	pub repeats : Option<i32>,
+	pub until : Option<String>,
+	pub per : Option<String>,
+	pub frequency : Option<i32>,
 }
 
 #[command]
@@ -150,7 +150,7 @@ pub async fn create_task(task : ReceiveTask, connection : AppHandle<Wry>) -> boo
 									  task.to_do_after.into(),
 									  task.task_type.into(),
 									  task.description.into(),
-									  task.repeats.into(),
+									  task.repeats.unwrap_or(-1).into(),
 									  task.until.into(),
 	];
 	let data : BTreeMap<String, Value> = BTreeMap::from_iter(varNames.into_iter().zip(varValues));
@@ -161,4 +161,16 @@ pub async fn create_task(task : ReceiveTask, connection : AppHandle<Wry>) -> boo
 		},
 		Err(_) => false,
    }
+}
+
+#[command]
+pub async fn fetch_tasks(connection : AppHandle<Wry>) -> Vec<ReceiveTask> {
+	match Ctx::from_app(connection) {
+		Ok(ctx) => {
+			Store::fetch_tasks(ctx).await;
+		},
+		Err(_) => ()
+   }
+
+	Vec::new()
 }

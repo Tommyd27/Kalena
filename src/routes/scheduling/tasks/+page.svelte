@@ -1,15 +1,22 @@
 <script>
+    import { invoke } from "@tauri-apps/api/tauri";
+
+
     // @ts-nocheck
-    import CreateTaskForm from "$lib/CreateTaskForm.svelte";
-    let taskName = ""
-    let taskDate = ""
-    let taskTime = ""
-    let taskDescription = ""
 
-
-    function printTaskName(){
-        console.log(taskName)
+    
+    async function fetchTasks() {
+        return await invoke("fetch_tasks");
     }
-</script>
 
-<CreateTaskForm></CreateTaskForm>
+    let tasks = fetchTasks();
+</script>
+<h1> on tasks</h1>
+{#await tasks}
+	<p>...fetching tasks</p>
+{:then tasks}
+	<p>{tasks}</p>
+{:catch error}
+	<p style="color: red">Failed to Fetch Tasks: {error}</p>
+    <button on:click = {fetchTasks}>Refetch</button>
+{/await}
