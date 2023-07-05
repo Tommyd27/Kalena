@@ -1,8 +1,1 @@
-# Svelte-Kit + Vite
-
-This template should help get you started developing with Tauri and Svelte-Kit in Vite.
-
-## Recommended IDE Setup
-
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
-
+Sveltekit and Tauri program that aims to do a variety of things from monitoring sleep to being able to track the playstyle's of Rocket League players. Ended up leaving this project and trying to achieve it's goals with a similar program "Kalto" currently being worked on in a private repository. 
